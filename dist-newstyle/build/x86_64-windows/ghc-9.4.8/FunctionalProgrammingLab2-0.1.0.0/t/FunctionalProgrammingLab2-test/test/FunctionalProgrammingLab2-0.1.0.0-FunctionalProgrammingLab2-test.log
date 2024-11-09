@@ -1,0 +1,63 @@
+Test suite FunctionalProgrammingLab2-test: RUNNING...
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+*** Failed! (after 1 test):
+Exception:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+0
+Exception thrown while showing test case:
+  src\AVLTree.hs:11:10-47: No instance nor default method for class operation arbitrary
+
+Test suite FunctionalProgrammingLab2-test: PASS
+Test suite logged to: C:\Users\1\FunctionalProgrammingLab2\dist-newstyle\build\x86_64-windows\ghc-9.4.8\FunctionalProgrammingLab2-0.1.0.0\t\FunctionalProgrammingLab2-test\test\FunctionalProgrammingLab2-0.1.0.0-FunctionalProgrammingLab2-test.log

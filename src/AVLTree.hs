@@ -1,0 +1,90 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
+module AVLTree where
+
+import           Test.QuickCheck
+
+data AVLTree a = Empty
+               | Node (AVLTree a) a Int (AVLTree a) Int
+               deriving (Show, Eq)
+
+instance (Arbitrary a) => Arbitrary (AVLTree a)
+instance Semigroup (AVLTree a) where
+    Empty <> tree          = tree
+    tree <> Empty          = tree
+    Node l x h r _ <> tree = Node l x h (r <> tree) undefined
+
+instance Monoid (AVLTree a) where
+    mempty = Empty
+    mappend = (<>)
+
+height :: AVLTree a -> Int
+height Empty            = 0
+height (Node _ _ _ _ h) = h
+
+balanceFactor :: AVLTree a -> Int
+balanceFactor Empty                   = 0
+balanceFactor (Node left _ _ right _) = height left - height right
+
+mkNode :: AVLTree a -> a -> Int -> AVLTree a -> AVLTree a
+mkNode left value count right = Node left value count right (1 + max (height left) (height right))
+
+rotateRight :: AVLTree a -> AVLTree a
+rotateRight (Node (Node left value count right _) v c rightTree _) =
+    mkNode left value count (mkNode rightTree v 1 rightTree)
+
+rotateLeft :: AVLTree a -> AVLTree a
+rotateLeft (Node left value count (Node leftTree v countR rightTree _) _) =
+    mkNode (mkNode left value count leftTree) v countR rightTree
+
+balance :: AVLTree a -> AVLTree a
+balance tree
+    | balanceFactor tree > 1 = if balanceFactor (left tree) < 0
+                                then rotateRight (rotateLeft tree)
+                                else rotateRight tree
+    | balanceFactor tree < -1 = if balanceFactor (right tree) > 0
+                                 then rotateLeft (rotateRight tree)
+                                 else rotateLeft tree
+    | otherwise = tree
+  where
+    left (Node l _ _ _ _) = l
+    right (Node _ _ _ r _) = r
+
+insert :: (Ord a) => a -> AVLTree a -> AVLTree a
+insert value Empty = mkNode Empty value 1 Empty
+insert value (Node left v count right _)
+    | value < v = balance $ mkNode (insert value left) v count right
+    | value > v = balance $ mkNode left v count (insert value right)
+    | otherwise = balance $ mkNode left v (count + 1) right
+
+delete :: (Ord a) => a -> AVLTree a -> AVLTree a
+delete _ Empty = Empty
+delete value (Node left v count right _)
+    | value < v = balance $ mkNode (delete value left) v count right
+    | value > v = balance $ mkNode left v count (delete value right)
+    | otherwise = case count of
+        1 -> case (left, right) of
+            (Empty, _) -> right
+            (_, Empty) -> left
+            _ -> balance $ mkNode left minValue 1 (delete minValue right)
+                where minValue = findMin right
+        n -> balance $ mkNode left v (n - 1) right
+
+findMin :: AVLTree a -> a
+findMin (Node Empty value _ _ _) = value
+findMin (Node left _ _ _ _)      = findMin left
+
+contains :: (Ord a) => a -> AVLTree a -> Bool
+contains _ Empty = False
+contains value (Node left v count right _)
+    | value < v = contains value left
+    | value > v = contains value right
+    | otherwise = True
+
+uniqueItems :: AVLTree a -> [a]
+uniqueItems Empty = []
+uniqueItems (Node left value count right _) = uniqueItems left ++ replicate count value ++ uniqueItems right
+
+toList :: AVLTree a -> [a]
+toList Empty = []
+toList (Node left value count right _) = concat (replicate count [value]) ++ toList left ++ toList right
