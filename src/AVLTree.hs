@@ -88,3 +88,37 @@ uniqueItems (Node left value count right _) = uniqueItems left ++ replicate coun
 toList :: AVLTree a -> [a]
 toList Empty = []
 toList (Node left value count right _) = concat (replicate count [value]) ++ toList left ++ toList right
+
+filterTree :: (Ord a) => (a -> Bool) -> AVLTree a -> AVLTree a
+filterTree _ Empty = Empty
+filterTree predicate (Node left value count right _)
+    | predicate value = mkNode (filterTree predicate left) value count (filterTree predicate right)
+    | otherwise = merge (filterTree predicate left) (filterTree predicate right)
+
+merge :: (Ord a) => AVLTree a -> AVLTree a -> AVLTree a
+merge Empty tree                                   = tree
+merge tree Empty                                   = tree
+merge left@(Node _ _ _ _ _) right@(Node _ _ _ _ _) = balance (append left right)
+
+append :: (Ord a) => AVLTree a -> AVLTree a -> AVLTree a
+append Empty tree = tree
+append tree Empty = tree
+append left right = balance (mkNode left minValue 1 (delete minValue right))
+    where minValue = findMin right
+
+mapTree :: (a -> b) -> AVLTree a -> AVLTree b
+mapTree _ Empty = Empty
+mapTree f (Node left value count right _) = mkNode (mapTree f left) (f value) count (mapTree f right)
+
+foldlAVL :: (b -> a -> b) -> b -> AVLTree a -> b
+foldlAVL _ acc Empty = acc
+foldlAVL f acc (Node left value count right _) =
+    foldlAVL f (foldlAVL f (applyCount f acc count value) left) right
+  where
+    applyCount _ acc 0 _ = acc
+    applyCount g acc n v = applyCount g (g acc v) (n - 1) v
+
+foldrAVL :: (a -> b -> b) -> b -> AVLTree a -> b
+foldrAVL _ acc Empty = acc
+foldrAVL f acc (Node left value count right _) =
+    foldrAVL f (f value (foldrAVL f acc right)) left

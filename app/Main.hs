@@ -31,9 +31,30 @@ main = do
 
     putStrLn $ "Дерево сбалансировано? " ++ show (isBalanced tree5)
 
+        -- Применение filterTree: выбираем только четные числа
+    let filteredTree = filterTree even tree4
+    putStrLn $ "AVL-дерево с четными числами: " ++ show (toList filteredTree)
+
+    -- Применение mapTree: инкрементируем каждое значение на 1
+    let mappedTree = mapTree (+1) tree4
+    putStrLn $ "AVL-дерево после увеличения на 1: " ++ show (toList mappedTree)
+
+    -- Применение foldlAVL: нахождение суммы всех элементов
+    let sumLeft = foldlAVL (+) 0 tree4
+    putStrLn $ "Сумма всех элементов (с использованием foldl): " ++ show sumLeft
+
+    -- Применение foldrAVL: нахождение суммы всех элементов
+    let sumRight = foldrAVL (+) 0 tree4
+    putStrLn $ "Сумма всех элементов (с использованием foldr): " ++ show sumRight
+
+    -- Пример с пустым деревом
+    let emptyTree = Empty
+    putStrLn $ "Сумма элементов в пустом дереве: " ++ show (foldlAVL (+) 0 emptyTree)
+
 isBalanced :: AVLTree a -> Bool
 isBalanced Empty = True
 isBalanced (Node left _ _ right _) =
     abs (balanceFactor (Node left undefined 0 right undefined)) <= 1 &&
     isBalanced left &&
     isBalanced right
+
