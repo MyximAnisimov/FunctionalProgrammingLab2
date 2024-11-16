@@ -56,7 +56,7 @@ main = do
     putStrLn $ "Сумма элементов в пустом дереве: " ++ show (foldlAVL (+) 0 emptyTree)
 
     let mergeTree = merge tree8 tree12
-    putStrLn $ "Слияние дерева: " ++ show (mergeTree)
+    putStrLn $ "Слияние дерева: " ++ show mergeTree
 
     putStrLn $ "Дерево сбалансировано? " ++ show (isBalanced mergeTree)
 
