@@ -12,7 +12,10 @@ main = do
     let tree3 = insert 15 tree2
     let tree4 = insert 16 tree3
     let tree8 = insert 17 tree4
-
+    let tree9 = insert 8 Empty
+    let tree10 = insert 12 tree9
+    let tree11 = insert 14 tree10
+    let tree12 = insert 19 tree11
     putStrLn "Исходное дерево после вставок:"
     print tree8
 
@@ -51,6 +54,11 @@ main = do
     -- Пример с пустым деревом
     let emptyTree = Empty
     putStrLn $ "Сумма элементов в пустом дереве: " ++ show (foldlAVL (+) 0 emptyTree)
+
+    let mergeTree = merge tree8 tree12
+    putStrLn $ "Слияние дерева: " ++ show (mergeTree)
+
+    putStrLn $ "Дерево сбалансировано? " ++ show (isBalanced mergeTree)
 
 isBalanced :: AVLTree a -> Bool
 isBalanced Empty = True

@@ -6,13 +6,13 @@ import           AVLTree
 import           Data.List       (sort)
 import           Test.QuickCheck
 
-prop_invariant_insert :: Int -> AVLTree Int -> Bool
-prop_invariant_insert x tree =
+test_insert :: Int -> AVLTree Int -> Bool
+test_insert x tree =
     let newTree = insert x tree
     in isBalanced newTree
 
-prop_invariant_delete :: Int -> AVLTree Int -> Bool
-prop_invariant_delete x tree =
+test_remove :: Int -> AVLTree Int -> Bool
+test_remove x tree =
     let newTree = delete x tree
     in isBalanced newTree
 
@@ -23,13 +23,13 @@ isBalanced (Node left _ _ right _) =
     isBalanced left &&
     isBalanced right
 
-prop_contains :: Int -> AVLTree Int -> Bool
-prop_contains x tree =
+test_contains :: Int -> AVLTree Int -> Bool
+test_contains x tree =
     let newTree = insert x tree
     in contains x newTree
 
-prop_delete :: Int -> AVLTree Int -> Bool
-prop_delete x tree =
+test_delete :: Int -> AVLTree Int -> Bool
+test_delete x tree =
     let newTree = insert x tree
     in not (contains x (delete x newTree))
 
@@ -58,15 +58,15 @@ prop_balanced_after_insert x tree =
 toListCompare :: AVLTree Int -> AVLTree Int -> Bool
 toListCompare tree1 tree2 = sort (toList tree1) == sort (toList tree2)
 
-prop_filter_tree :: AVLTree Int -> Bool
-prop_filter_tree tree =
+test_filter_tree :: AVLTree Int -> Bool
+test_filter_tree tree =
     let predicate = even 
         filteredTree = filterTree predicate tree
         elements = toList filteredTree
     in all predicate elements && length elements <= length (toList tree)
 
-prop_map_tree :: AVLTree Int -> Bool
-prop_map_tree tree =
+test_map_tree :: AVLTree Int -> Bool
+test_map_tree tree =
     let f x = x + 1
         mappedTree = mapTree f tree
         mappedElements = toList mappedTree
@@ -74,15 +74,15 @@ prop_map_tree tree =
         expectedResult = map f originalElements
     in mappedElements == expectedResult
 
-prop_foldlAVL :: AVLTree Int -> Bool
-prop_foldlAVL tree =
+testfoldlAVL :: AVLTree Int -> Bool
+testfoldlAVL tree =
     let sumFunction acc x = acc + x
         resultFoldl = foldlAVL sumFunction 0 tree
         resultListFold = foldl sumFunction 0 (toList tree)
     in resultFoldl == resultListFold
 
-prop_foldrAVL :: AVLTree Int -> Bool
-prop_foldrAVL tree =
+testFoldrAVL :: AVLTree Int -> Bool
+testFoldrAVL tree =
     let sumFunction x acc = x + acc
         resultFoldr = foldrAVL sumFunction 0 tree
         resultListFold = foldr sumFunction 0 (toList tree)
@@ -90,15 +90,15 @@ prop_foldrAVL tree =
 
 main :: IO ()
 main = do
-    quickCheck prop_invariant_insert
-    quickCheck prop_invariant_delete
-    quickCheck prop_contains
-    quickCheck prop_delete
+    quickCheck test_insert
+    quickCheck test_remove
+    quickCheck test_contains
+    quickCheck test_delete
     quickCheck prop_insert_remove
     quickCheck prop_monoid_associativity
     quickCheck prop_monoid_identity
     quickCheck prop_balanced_after_insert
-    quickCheck prop_filter_tree
-    quickCheck prop_map_tree
-    quickCheck prop_foldlAVL
-    quickCheck prop_foldrAVL
+    quickCheck test_filter_tree
+    quickCheck test_map_tree
+    quickCheck testfoldlAVL
+    quickCheck testFoldrAVL
