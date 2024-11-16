@@ -60,7 +60,7 @@ toListCompare tree1 tree2 = sort (toList tree1) == sort (toList tree2)
 
 prop_filter_tree :: AVLTree Int -> Bool
 prop_filter_tree tree =
-    let predicate x = even x
+    let predicate = even 
         filteredTree = filterTree predicate tree
         elements = toList filteredTree
     in all predicate elements && length elements <= length (toList tree)

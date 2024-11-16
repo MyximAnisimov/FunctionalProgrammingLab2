@@ -10,15 +10,16 @@
 
 1. Функции:
 
-* добавление и удаление элементов;
-* фильтрация;
-* отображение (map);
-* свертки (левая и правая);
-* структура должна быть моноидом.
+    * добавление и удаление элементов;
+    * фильтрация;
+    * отображение (map);
+    * свертки (левая и правая);
+    * структура должна быть моноидом.
 
 2. Структуры данных должны быть неизменяемыми.
 3. Библиотека должна быть протестирована в рамках unit testing.
-4. Библиотека должна быть протестирована в рамках property-based тестирования (как минимум 3 свойства, включая свойства моноида).
+4. Библиотека должна быть протестирована в рамках 
+property-based тестирования (как минимум 3 свойства, включая свойства моноида).
 5. Структура должна быть полиморфной.
 6. Требуется использовать идиоматичный для технологии стиль программирования
 
@@ -55,7 +56,8 @@ balanceFactor Empty                   = 0
 balanceFactor (Node left _ _ right _) = height left - height right
 
 mkNode :: AVLTree a -> a -> Int -> AVLTree a -> AVLTree a
-mkNode left value count right = Node left value count right (1 + max (height left) (height right))
+mkNode left value count right =
+     Node left value count right (1 + max (height left) (height right))
 
 rotateRight :: AVLTree a -> AVLTree a
 rotateRight (Node (Node left value count right _) v c rightTree _) =
@@ -111,16 +113,19 @@ contains value (Node left v count right _)
 
 uniqueItems :: AVLTree a -> [a]
 uniqueItems Empty = []
-uniqueItems (Node left value count right _) = uniqueItems left ++ replicate count value ++ uniqueItems right
+uniqueItems (Node left value count right _) = 
+    uniqueItems left ++ replicate count value ++ uniqueItems right
 
 toList :: AVLTree a -> [a]
 toList Empty = []
-toList (Node left value count right _) = concat (replicate count [value]) ++ toList left ++ toList right
+toList (Node left value count right _) =
+     concat (replicate count [value]) ++ toList left ++ toList right
 
 filterTree :: (Ord a) => (a -> Bool) -> AVLTree a -> AVLTree a
 filterTree _ Empty = Empty
 filterTree predicate (Node left value count right _)
-    | predicate value = mkNode (filterTree predicate left) value count (filterTree predicate right)
+    | predicate value = 
+        mkNode (filterTree predicate left) value count (filterTree predicate right)
     | otherwise = merge (filterTree predicate left) (filterTree predicate right)
 
 merge :: (Ord a) => AVLTree a -> AVLTree a -> AVLTree a
@@ -136,7 +141,8 @@ append left right = balance (mkNode left minValue 1 (delete minValue right))
 
 mapTree :: (a -> b) -> AVLTree a -> AVLTree b
 mapTree _ Empty = Empty
-mapTree f (Node left value count right _) = mkNode (mapTree f left) (f value) count (mapTree f right)
+mapTree f (Node left value count right _) =
+     mkNode (mapTree f left) (f value) count (mapTree f right)
 
 foldlAVL :: (b -> a -> b) -> b -> AVLTree a -> b
 foldlAVL _ acc Empty = acc
