@@ -98,7 +98,7 @@ filterTree predicate (Node left value count right _)
 merge :: (Ord a) => AVLTree a -> AVLTree a -> AVLTree a
 merge Empty tree                                   = tree
 merge tree Empty                                   = tree
-merge left@(Node _ _ _ _ _) right@(Node _ _ _ _ _) = balance (append left right)
+merge left@(Node {}) right@(Node {}) = balance (append left right)
 
 append :: (Ord a) => AVLTree a -> AVLTree a -> AVLTree a
 append Empty tree = tree

@@ -37,7 +37,7 @@ prop_insert_remove :: Int -> AVLTree Int -> Bool
 prop_insert_remove x tree =
     let newTree = insert x tree
         finalTree = delete x newTree
-    in not (contains x newTree) && contains x newTree == True
+    in not (contains x newTree) && contains x newTree
        && (finalTree == delete x tree)
 
 prop_monoid_associativity :: AVLTree Int -> AVLTree Int -> AVLTree Int -> Bool
@@ -60,7 +60,7 @@ toListCompare tree1 tree2 = sort (toList tree1) == sort (toList tree2)
 
 prop_filter_tree :: AVLTree Int -> Bool
 prop_filter_tree tree =
-    let predicate x = x `mod` 2 == 0
+    let predicate x = even x
         filteredTree = filterTree predicate tree
         elements = toList filteredTree
     in all predicate elements && length elements <= length (toList tree)
