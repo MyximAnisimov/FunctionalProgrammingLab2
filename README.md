@@ -162,4 +162,4 @@ foldrAVL f acc (Node left value count right _) =
 ---
 
 Данная структура данных протестирована с помощью unit тестов и property-based тестов.
-![](Screenshot.png)
+![Результат тестирования](Screenshot.png)
